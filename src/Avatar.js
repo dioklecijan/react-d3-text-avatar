@@ -18,14 +18,14 @@ export default class Avatar extends React.Component {
     let clr = bgColor || "blue";
     const clrText = d3.hsl(clr).l > 0.5 ? "black" : "white";
 
-    svg
+    let c = svg
       .append("circle")
       .attr("r", r)
       .attr("cy", height / 2)
       .attr("cx", width / 2)
       .attr("fill", bgColor || "blue");
 
-    svg
+    let t = svg
       .append("text")
       .attr("y", height / 2)
       .attr("x", width / 2)
@@ -36,6 +36,9 @@ export default class Avatar extends React.Component {
       .style("font-family", "sans-serif")
       .style("font-weight", "200")
       .text(text.substr(0, 2));
+
+    c.exit().remove();
+    t.exit().remove();
   };
 
   render() {

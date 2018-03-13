@@ -6,13 +6,28 @@ export default class Avatar extends React.Component {
     this.draw();
   }
 
-  componentWillUpdate() {
+  shouldComponentUpdate(nextProps, nextState) {
+    const { r, bgColor, text, width, height } = this.props;
+    if (
+      nextProps.width !== width ||
+      nextProps.height !== height ||
+      nextProps.r !== r ||
+      nextProps.bgColor !== bgColor ||
+      nextProps.text !== text
+    )
+      return true;
+    return false;
+  }
+
+  componentDidUpdate() {
     this.draw();
   }
 
-  draw = () => {
-    const { r, bgColor, text } = this.props;
+  draw = props => {
+    const { r, bgColor, text } = props || this.props;
     const svg = d3.select(this.svg);
+    svg.selectAll("*").remove();
+
     let width = svg.attr("width");
     let height = svg.attr("height");
     let clr = bgColor || "blue";
@@ -36,9 +51,6 @@ export default class Avatar extends React.Component {
       .style("font-family", "sans-serif")
       .style("font-weight", "200")
       .text(text.substr(0, 2));
-
-    c.exit().remove();
-    t.exit().remove();
   };
 
   render() {
